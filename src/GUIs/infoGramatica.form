@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<Form version="1.8" maxVersion="1.8" type="org.netbeans.modules.form.forminfo.JFrameFormInfo">
+  <Properties>
+    <Property name="defaultCloseOperation" type="int" value="3"/>
+  </Properties>
+  <SyntheticProperties>
+    <SyntheticProperty name="formSizePolicy" type="int" value="1"/>
+    <SyntheticProperty name="generateCenter" type="boolean" value="false"/>
+  </SyntheticProperties>
+  <AuxValues>
+    <AuxValue name="FormSettings_autoResourcing" type="java.lang.Integer" value="0"/>
+    <AuxValue name="FormSettings_autoSetComponentName" type="java.lang.Boolean" value="false"/>
+    <AuxValue name="FormSettings_generateFQN" type="java.lang.Boolean" value="true"/>
+    <AuxValue name="FormSettings_generateMnemonicsCode" type="java.lang.Boolean" value="false"/>
+    <AuxValue name="FormSettings_i18nAutoMode" type="java.lang.Boolean" value="false"/>
+    <AuxValue name="FormSettings_layoutCodeTarget" type="java.lang.Integer" value="1"/>
+    <AuxValue name="FormSettings_listenerGenerationStyle" type="java.lang.Integer" value="0"/>
+    <AuxValue name="FormSettings_variablesLocal" type="java.lang.Boolean" value="false"/>
+    <AuxValue name="FormSettings_variablesModifier" type="java.lang.Integer" value="2"/>
+  </AuxValues>
+
+  <Layout>
+    <DimensionLayout dim="0">
+      <Group type="103" groupAlignment="0" attributes="0">
+          <Group type="102" alignment="1" attributes="0">
+              <EmptySpace max="-2" attributes="0"/>
+              <Component id="jScrollPane1" pref="753" max="32767" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
+          </Group>
+      </Group>
+    </DimensionLayout>
+    <DimensionLayout dim="1">
+      <Group type="103" groupAlignment="0" attributes="0">
+          <Group type="102" alignment="1" attributes="0">
+              <EmptySpace max="-2" attributes="0"/>
+              <Component id="jScrollPane1" pref="517" max="32767" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
+          </Group>
+      </Group>
+    </DimensionLayout>
+  </Layout>
+  <SubComponents>
+    <Container class="javax.swing.JScrollPane" name="jScrollPane1">
+      <AuxValues>
+        <AuxValue name="autoScrollPane" type="java.lang.Boolean" value="true"/>
+      </AuxValues>
+
+      <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
+      <SubComponents>
+        <Component class="javax.swing.JTextArea" name="jTextArea1">
+          <Properties>
+            <Property name="columns" type="int" value="20"/>
+            <Property name="rows" type="int" value="5"/>
+            <Property name="text" type="java.lang.String" value="R ::= &#x9;    TABLA&#xa;&#x9;  | R CRUZ R &#xa;&#x9;  | R UNION R&#xa;&#x9;  | SELECT PAR_I Condicion COMA R PAR_D&#xa;&#x9;  | PROY PAR_I  ListaCampos COMA R PAR_D&#xa;&#x9;  | R INTERCECTION R PAR_I ListaCampos PAR_D&#xa;&#x9;  | R DIFERENCIA R PAR_I Condicion PAR_D &#xa;&#x9;  | JOIN PAR_I R COMA R PAR_D  &#xa;&#x9;  | JOIN PAR_I Condicion COMA R COMA R PAR_D&#xa;&#x9;  | PAR_I R PAR_D&#xa;&#x9;  ;&#xa;&#xa;ListaCampos ::= &#x9;Campo&#xa;&#x9;&#x9;      | PAR_I ListaCampos PAR_D &#xa;&#x9;&#x9;      | ListaCampos COMA Campo&#xa;&#x9;&#x9;       ;&#xa;&#xa;Campo ::=   IDENTIFICADOR PUNTO IDENTIFICADOR&#xa;&#x9;  | IDENTIFICADOR&#xa;&#x9;  ;&#xa;&#xa;Condicion ::=   Expresion&#xa;&#x9;      | Condicion OR Condicion&#xa;&#x9;      | Condicion AND Condicion&#xa;&#x9;      | NOT Expresion&#xa;       &#x9;      ;&#xa;&#xa;Expresion ::= PAR_I Expresion&#xa;&#x9;&#x9;&#x9;  | Expresion MAYOR Expresion&#xa;&#x9;&#x9;&#x9;  | Expresion MAYORIGUAL Expresion&#xa;&#x9;&#x9;&#x9;  | Expresion MENOR Expresion&#xa;&#x9;&#x9;&#x9;  | Expresion MENORIGUAL Expresion&#xa;&#x9;&#x9;&#x9;  | Expresion IGUAL Expresion&#xa;&#x9;&#x9;&#x9;  | Expresion DIFERENTE Expresion&#xa;&#x9;&#x9;&#x9;  | Expresion COMO CADENA&#xa;&#x9;&#x9;&#x9;  | CADENA&#xa;&#x9;&#x9;&#x9;  | NUMERO&#xa;&#x9;&#x9;&#x9;  | Campo&#xa;&#x9;&#x9;&#x9;  ;&#xa;&#x9;&#x9;&#x9;  &#xa;ALPHA=[A-Za-z]&#xa;DIGITO=[0-9]&#xa;ALPHANUMERIC={ALPHA}|{DIGITO}&#xa;&#xa;NUMERO=({DIGITO})+ | ({DIGITO})+.({DIGITO})+&#xa;IDENTIFICADOR={ALPHA}({ALPHANUMERIC} | [_])*&#xa;&#xa;TAB=&quot;T.&quot;({IDENTIFICADOR})&#xa;SALTO=\u005cn|\u005cr|\u005cr\u005cn&#xa;ESPACIO=[ \u005ct\u005cf]&#xa;CADENA = \u005c&quot; ({NUMERO} | {ALPHANUMERIC}| _|-|%)* \u005c&quot;" containsInvalidXMLChars="true"/>
+          </Properties>
+        </Component>
+      </SubComponents>
+    </Container>
+  </SubComponents>
+</Form>

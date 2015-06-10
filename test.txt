@@ -1,0 +1,3 @@
+σ(campo = "saludo" | campo < 32.34 ,Tabla) *
+Π( hola,com,estas, nameTabla);
+σ(usuario = "Absa" | usuario < 32.34 , tablas)

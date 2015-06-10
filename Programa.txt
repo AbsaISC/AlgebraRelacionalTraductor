@@ -1,0 +1,1 @@
+σ( actor_id<=80 & actor_id>=70 |  first_name LIKE "E%" ,  T.actor ) *  σ( actor_id<=50 & actor_id>=40 |  first_name LIKE "E%" ,  T.actor )

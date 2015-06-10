@@ -1,0 +1,213 @@
+/**/
+package traductor;
+
+import java_cup.runtime.*;
+import java.io.FileReader;
+import java.util.Stack;
+
+parser code {:
+
+	public String getResultado(){
+		return action_obj.query;
+	}
+
+	public void report_error(String error,Object info){
+		StringBuilder m=new StringBuilder("Error");
+		if (info instanceof java_cup.runtime.Symbol){
+			java_cup.runtime.Symbol s=((java_cup.runtime.Symbol) info);
+			if(s.left >= 0){
+				m.append(" in line "+(s.left+1));
+				if(s.right >= 0)
+					m.append(", column "+(s.right+1));
+			}
+		}
+		m.append(" : "+error);
+		System.err.println(m);
+	}
+
+	public void report_fatal_error(String error, Object info){
+		throw new Error(report_error(error,info));
+	}
+:};
+
+
+action code{:
+	
+	Stack<String> stackConsultas =new Stack<String>();
+	Stack<String> stackCampos =new Stack<String>();
+	Stack<String> stackConds =new Stack<String>();
+
+	String query="";
+	int num=0;
+
+	public void insertaConsulta(String consulta){
+		stackConsultas.push(cousulta);
+	}
+	public void insertaCampo(String campo){
+		stackCampos.push(campo);
+	}
+	public void insertaConds(String cond){
+		stackConds.push(cond);
+	}
+
+	public void seleccion(){
+		String consAnt = stackConsultas.pop();
+		String nvaCon,condAct="";
+
+		if(esOtraConsulta(consAnt)){
+			regla="("+regla+") AS A"+num;
+			num++;
+		}
+
+		nvaCon="SELECT * FROM "+regla+" WHERE "+cond;
+		return query;
+	}
+
+
+	/*
+	public boolean esOtraConsulta(String objeto){
+		String[] sep=objeto.split(" ");
+		for(int i=0;i<sep.length;i++)
+			if(sep[i].equals("SELECT"))
+				return true;
+		return false;
+	}
+
+	public String union(String reg1,String reg2){
+		query=reg1+" UNION "+reg2;
+		return query;
+	}
+
+	public String cruz(String reg1,String reg2){
+		if(esOtraConsulta(reg1)){
+			reg1="("+reg1+") AS A"+num;
+			num++;
+		}
+		if(esOtraConsulta(reg2)){
+			reg2="("+reg2+") AS B"+num;
+			num++;
+		}
+			query="SELECT * FROM "+reg1+","+reg2+"";
+		return query;
+	}
+
+	public String interceccion(String reg1,String reg2,String campos){
+		if(esOtraConsulta(reg1)){
+			reg1="("+reg1+") AS A"+num;
+			num++;
+		}
+		if(esOtraConsulta(reg2)){
+			reg2="("+reg2+") AS B"+num;
+			num++;
+		}
+		query="SELECT * FROM "+reg1+" INNER JOIN "+reg2+" USING ( "+campos+" )";
+		return query;
+	}
+
+	public String proyeccion(String regla,String campos){
+		if(esOtraConsulta(regla)){
+			regla="("+regla+") AS A"+num;
+			num++;
+		}
+		query="SELECT "+campos+" FROM "+regla;
+		return query;
+	}
+
+	public String diferencia(String reg1,String reg2,String condiciones){
+		if(esOtraConsulta(reg1)){
+			reg1="("+reg1+") AS A"+num;
+			num++;
+		}
+		if(esOtraConsulta(reg2)){
+			reg2="("+reg2+") AS B"+num;
+			num++;
+		}
+		query="SELECT * FROM "+reg1+" AS A LEFT OUTER JOIN "+reg2+" AS B ON "+condiciones+" WHERE B.id=NULL";
+		return query;
+	}
+
+	public String join(String reg1,String reg2){
+		if(esOtraConsulta(reg1)){
+			reg1="("+reg1+") AS A"+num;
+			num++;
+		}
+		if(esOtraConsulta(reg2)){
+			reg2="("+reg2+") AS B"+num;
+			num++;
+		}
+		query="SELECT * FROM "+reg1+" NATURAL JOIN "+reg2;
+		return query;
+	}
+
+	public String join(String reg1,String reg2,String condicion){
+		if(esOtraConsulta(reg1)){
+			reg1="("+reg1+") AS A"+num;
+			num++;
+		}
+		if(esOtraConsulta(reg2)){
+			reg2="("+reg2+") AS B"+num;
+			num++;
+		}
+		query="SELECT * FROM "+reg1+" NATURAL JOIN "+reg2+" WHERE "+condicion;
+		return query;
+	}*/
+	
+:}; 
+
+terminal PROY, SELECT, INTERCECTION;
+terminal UNION, CRUZ, DIFERENCIA, JOIN;
+terminal COMA, PUNTO, PAR_I, PAR_D,PyC;
+terminal AND, OR, NOT;
+terminal MAYOR, MAYORIGUAL, MENOR, MENORIGUAL, IGUAL, DIFERENTE, COMO;
+terminal String IDENTIFICADOR,CADENA, TABLA;
+terminal String NUMERO;
+
+non terminal String R, ListaCampos, Campo, Condicion, Expresion, Final;
+
+precedence right MAYOR, MAYORIGUAL, MENOR, MENORIGUAL, IGUAL, DIFERENTE, COMO;
+precedence left OR;
+precedence left AND;
+precedence right NOT, PyC;
+precedence right UNION, CRUZ, DIFERENCIA, JOIN, INTERCECTION, PAR_D,COMA;
+Final::= R
+		;
+R ::= TABLA:tab {:insertaConsulta(tab);:}
+	  | SELECT PAR_I Condicion:cond COMA R:reg PAR_D{:RESULT= seleccion(reg,cond);:}
+	  | PROY PAR_I  ListaCampos:lcamp COMA R:reg PAR_D{:RESULT= proyeccion(reg,lcamp);:}
+	  | R:reg1 CRUZ R:reg2 {:RESULT=cruz(reg1,reg2);:}
+	  |	R:reg1 UNION R:reg2 {:RESULT=union(reg1,reg2);:}
+	  //| R:reg1 INTERCECTION R:reg2 PAR_I ListaCampos:lcamp PAR_D{:RESULT=interceccion(reg1,reg2,lcamp);:}
+	  //|	R:reg1 DIFERENCIA R:reg2 PAR_I Condicion:cond PAR_D {:RESULT=diferencia(reg1,reg2,cond);:}
+	  | JOIN PAR_I R:reg1 COMA R:reg2 PAR_D  {:RESULT=join(reg1,reg2); :}
+	  | JOIN PAR_I Condicion:cond COMA R:reg1 COMA R:reg2 PAR_D {:RESULT=join(reg1,reg2,cond); :}
+	  | PAR_I R PAR_D
+	  ;
+
+ListaCampos ::= Campo:camp{: insertaCampo(camp); :}//mal
+				| PAR_I ListaCampos:lcamp PAR_D // {: RESULT = lcamp; :}
+				| ListaCampos:lcamp COMA  Campo:camp {: insertaCampo(camp); :}
+				;
+
+Campo ::= IDENTIFICADOR:id1 PUNTO IDENTIFICADOR:id2{:RESULT=id1+"."+id2;:}
+		  | IDENTIFICADOR:id {:RESULT=id;:}
+		  ;
+
+Condicion ::= Expresion:exp 	{:insertaConds(exp);:}
+			  | Condicion:cond1 OR Condicion:cond2  {: insertaConds(" OR "); :}
+			  | Condicion:cond1 AND Condicion:cond2 {:insertaConds(" AND "); :}
+			  | NOT Expresion:exp{: insertaConds("NOT "+exp); :}
+			  ;
+
+Expresion ::= PAR_I Expresion:exp PAR_D
+			  | Expresion:exp1 MAYOR Expresion:exp2		{:RESULT=exp1+" > "+exp2;:}
+			  | Expresion:exp1 MAYORIGUAL Expresion:exp2		{:RESULT=exp1+" >= "+exp2;:}
+			  | Expresion:exp1 MENOR Expresion:exp2		{:RESULT=exp1+" < "+exp2;:}
+			  | Expresion:exp1 MENORIGUAL Expresion:exp2		{:RESULT=exp1+" <= "+exp2;:}
+			  | Expresion:exp1 IGUAL Expresion:exp2		{:RESULT=exp1+" = "+exp2;:}
+			  | Expresion:exp1 DIFERENTE Expresion:exp2		{:RESULT=exp1+" <> "+exp2;:}
+			  | Expresion:exp1 COMO Expresion:exp2		{:RESULT=exp1+" LIKE "+exp2;:}
+			  | CADENA:cad		{:RESULT=cad;:}
+			  | NUMERO:num 		{:RESULT=num.toString();:}
+			  |	Campo:camp			{:RESULT=camp;:}
+			  ;
+
