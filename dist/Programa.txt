@@ -1,1 +1,0 @@
-?( actor_id<=80 & actor_id>=75 |  first_name LIKE "E%" ,  T.actor ) *  ?( actor_id<=50 & actor_id>=40 |  first_name LIKE "E%" ,  T.actor )

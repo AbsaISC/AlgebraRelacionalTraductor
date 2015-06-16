@@ -1,2 +1,0 @@
-traductor.AnalizadorSintactico
-traductor.CUP$AnalizadorSintactico$actions
